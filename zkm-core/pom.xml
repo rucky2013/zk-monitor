@@ -1,18 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>zkm</artifactId>
+        <groupId>com.diwayou</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.diwayou</groupId>
-    <artifactId>zkm</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>zkm-core</artifactId>
+    <packaging>jar</packaging>
 
-    <modules>
-        <module>zkm-web</module>
-        <module>zkm-core</module>
-    </modules>
-    <packaging>pom</packaging>
-
-    <name>zkm</name>
+    <name>zkm-core</name>
     <url>http://maven.apache.org</url>
 
     <properties>
