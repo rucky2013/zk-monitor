@@ -56,7 +56,10 @@
     </profiles>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.diwayou</groupId>
+            <artifactId>zkm-core</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
