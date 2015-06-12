@@ -19,10 +19,127 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.netflix.servo</groupId>
+            <artifactId>servo-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>local</env>
+                <deploy.phase>local</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>alpha</id>
+            <properties>
+                <env>alpha</env>
+                <deploy.phase>alpha</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>beta</id>
+            <properties>
+                <env>beta</env>
+                <deploy.phase>beta</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>release</id>
+            <properties>
+                <env>release</env>
+                <deploy.phase>release</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <filters>
+            <filter>${basedir}/src/main/filters/${env}.properties</filter>
+        </filters>
+        <outputDirectory>target/classes</outputDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <testOutputDirectory>target/test-classess</testOutputDirectory>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.json</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>data.properties</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>src/main/filters</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+    </build>
 </project>

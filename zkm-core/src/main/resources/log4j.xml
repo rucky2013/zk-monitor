@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{yyyy-MM-dd HH:mm:ss}|%-4p|%t|%X{tid}|%X{cpnm}|%F:%L|%m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="ASYNC_CONSOLE" class="org.apache.log4j.AsyncAppender">
+        <param name="locationInfo" value="true"/>
+        <param name="BufferSize" value="1000"/>
+        <appender-ref ref="CONSOLE"/>
+    </appender>
+
+    <appender name="ASYNC_API_LOG" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="500"/>
+        <appender-ref ref="API_LOG"/>
+    </appender>
+
+    <appender name="API_LOG" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <param name="File" value="${log.dir}/logs/api.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}|%m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="com.*" additivity="false">
+        <level value="${log.level}"/>
+        <appender-ref ref="API_LOG"/>
+    </logger>
+
+    <root>
+        <level value="${log.level}"/>
+        <appender-ref ref="ASYNC_CONSOLE"/>
+        <appender-ref ref="API_LOG"/>
+    </root>
+
+</log4j:configuration>

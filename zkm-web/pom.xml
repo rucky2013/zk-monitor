@@ -10,15 +10,191 @@
     <packaging>war</packaging>
     <name>zkm-web Maven Webapp</name>
     <url>http://maven.apache.org</url>
+
+    <properties>
+        <jdk-version>1.6</jdk-version>
+        <source-encoding>UTF-8</source-encoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>local</env>
+                <deploy.phase>local</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>alpha</id>
+            <properties>
+                <env>alpha</env>
+                <deploy.phase>alpha</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>beta</id>
+            <properties>
+                <env>beta</env>
+                <deploy.phase>beta</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>release</id>
+            <properties>
+                <env>release</env>
+                <deploy.phase>release</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
+
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
     </dependencies>
     <build>
-        <finalName>zkm-web</finalName>
+        <finalName>${project.artifactId}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${deploy.dir}/WEB-INF/lib</directory>
+                            <includes>
+                                <include>*.jar</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <warSourceDirectory>${basedir}/src/main/webapp</warSourceDirectory>
+                    <webappDirectory>${deploy.dir}</webappDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
+                <configuration>
+                    <meminitial>256m</meminitial>
+                    <maxmem>1024m</maxmem>
+                    <source>${jdk-version}</source>
+                    <target>${jdk-version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <debug>true</debug>
+                    <optimize>true</optimize>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>source</id>
+                        <phase>compile</phase>
+                    </execution>
+                    <execution>
+                        <id>test</id>
+                        <phase>test-compile</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
     </build>
 </project>
