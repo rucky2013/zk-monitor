@@ -25,14 +25,8 @@ public class MonitorManager {
         return serverConfig.getClusterNames();
     }
 
-    public static void addCluster(String clusterName, String connectString) {
-        serverConfig.addCluster(clusterName);
-
-        serverConfig.addServer(clusterName, connectString);
-    }
-
-    public static void addServer(String clusterName, String serverIp, int clientPort) {
-        serverConfig.addServer(clusterName, serverIp, clientPort);
+    public static void addCluster(String clusterName, String connString) {
+        serverConfig.addCluster(clusterName, connString);
     }
 
     public static List<InetSocketAddress> getAddresses(String clusterName) {

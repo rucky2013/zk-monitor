@@ -25,18 +25,30 @@ public abstract class AbstractController {
 
     public static final String COMMON_TITLE = "Event Platform Admin";
 
-    protected String renderBody(ModelMap map, HttpServletRequest request, BodyRenderHandler handler) {
+    public static final String SUCCESS = "success";
+
+    protected String renderBody(ModelMap map, HttpServletRequest request, BodyRenderHandler handler, String template) {
         try {
             putPublicAttribute(map, request);
 
-            handler.handle(map);
+            if (handler != null) {
+                handler.handle(map);
+            }
         } catch (Exception e) {
             LOG.error("renderBody error: path=" + request.getServletPath(), e);
 
             putAlertMsg(map, e);
         }
 
-        return TEMPLATE;
+        return template;
+    }
+
+    protected String renderBody(ModelMap map, HttpServletRequest request, BodyRenderHandler handler) {
+        return renderBody(map, request, handler, TEMPLATE);
+    }
+
+    protected String renderBody(ModelMap map, HttpServletRequest request) {
+        return renderBody(map, request, null);
     }
 
     protected void putPublicAttribute(ModelMap map, HttpServletRequest request) {

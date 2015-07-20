@@ -6,8 +6,8 @@
                 </div>
                 <div class="navbar-collapse collapse">
                       <ul class="nav navbar-nav">
-                            <li #if($cluster_flag)class="$cluster_flag"#end><a href="$root/cluster/list.do">Cluster</a></li>
-                            <li #if($topic_flag)class="$topic_flag"#end><a href="$root/topic/list.do">Topic</a></li>
+                            <li #if($cluster_flag)class="$cluster_flag"#end><a href="$root/cluster/list">Cluster</a></li>
+                            <li #if($cluster_manager_flag)class="$cluster_manager_flag"#end><a href="$root/cluster/manager/createForm">Create</a></li>
                             <li class="dropdown $!connection_flag" >
                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Connection<b class="caret"></b></a>
                                  <ul class="dropdown-menu">

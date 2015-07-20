@@ -1,0 +1,16 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Ip</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+        #foreach ($status in $statusMap.entrySet())
+        <tr>
+            <td>$status.getKey()</td>
+            <td><pre>$status.getValue()</pre></td>
+        </tr>
+        #end
+    </tbody>
+</table>

@@ -2,17 +2,17 @@
 <html lang="en">
   <head>
 	#set($root=$link.getContextPath())
-	##parse("head.vm")
+	#parse("head.vm")
   </head>
   <body role="document">
-    ##parse("navbar.vm")
+    #parse("navbar.vm")
     <div class="container theme-showcase" role="main">
-    	##parse("msg.vm")
+    	#parse("msg.vm")
     	<!--changed part begin-->
 		#parse($bodyPage)
 		<!--changed part end -->
         ##parse("foot.vm")
     </div>
-	##parse("js.vm")
+	#parse("js.vm")
   </body>
 </html>

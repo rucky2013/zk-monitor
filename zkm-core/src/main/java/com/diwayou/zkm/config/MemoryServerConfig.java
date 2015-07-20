@@ -1,6 +1,5 @@
 package com.diwayou.zkm.config;
 
-import com.diwayou.zkm.exception.ClusterAlreadyExistException;
 import com.google.common.collect.Lists;
 import org.apache.zookeeper.client.ConnectStringParser;
 
@@ -18,36 +17,12 @@ public class MemoryServerConfig implements ServerConfig {
     private ConcurrentMap<String/*clusterName*/, List<InetSocketAddress>> config = new ConcurrentHashMap<String, List<InetSocketAddress>>();
 
     @Override
-    public void addCluster(String clusterName) {
-        List<InetSocketAddress> oldValue = config.putIfAbsent(clusterName, Lists.<InetSocketAddress>newArrayList());
-
-        if (oldValue != null) {
-            throw new ClusterAlreadyExistException("clusterName exists already.");
-        }
-    }
-
-    @Override
-    public void addServer(String clusterName, String serverIp, int clientPort) {
-        List<InetSocketAddress> addressList = config.get(clusterName);
-
-        if (addressList == null) {
-            throw new RuntimeException("You should addCluster first.");
-        }
-
-        addressList.add(new InetSocketAddress(serverIp, clientPort));
-    }
-
-    @Override
-    public void addServer(String clusterName, String connectString) {
-        List<InetSocketAddress> addressList = config.get(clusterName);
-
-        if (addressList == null) {
-            throw new RuntimeException("You should addCluster first.");
-        }
-
+    public void addCluster(String clusterName, String connectString) {
         ConnectStringParser parser = new ConnectStringParser(connectString);
 
-        addressList.addAll(parser.getServerAddresses());
+        List<InetSocketAddress> addresses = Lists.newArrayList();
+        addresses.addAll(parser.getServerAddresses());
+        config.put(clusterName, addresses);
     }
 
     @Override

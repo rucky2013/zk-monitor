@@ -1,1 +1,14 @@
-$content
+<table class="table">
+    <thead>
+    <tr>
+        <th>Cluster Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    #foreach ($cname in $clusterNames)
+        <tr>
+            <td><a href="/cluster/manager/detail?cname=$cname">$cname</a></td>
+        </tr>
+    #end
+    </tbody>
+</table>

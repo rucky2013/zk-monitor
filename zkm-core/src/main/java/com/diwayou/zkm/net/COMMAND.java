@@ -29,6 +29,8 @@ public enum COMMAND {
 
     WCHP("wchp"),
 
+    MNTR("mntr"),
+
     ;
 
     private String comm;
