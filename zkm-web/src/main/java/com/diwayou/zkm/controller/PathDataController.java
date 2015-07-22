@@ -44,8 +44,8 @@ public class PathDataController extends AbstractController {
     @RequestMapping(value = "/createOrUpdate", method = RequestMethod.GET)
     public String node(HttpServletRequest request, ModelMap map,
                        @RequestParam(value = "cname", required = false) final String clusterName,
-                       @RequestParam(value = "path", required = false) final String path,
-                       @RequestParam(value = "c", required = false) final String isCreate) {
+                       @RequestParam(value = "path", required = false, defaultValue = "") final String path,
+                       @RequestParam(value = "c", required = false, defaultValue = "") final String isCreate) {
         return renderBody(map, request, new BodyRenderHandler() {
             @Override
             public void handle(ModelMap map) {

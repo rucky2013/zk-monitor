@@ -11,7 +11,7 @@
                             <li class="dropdown $!path_data_flag" >
                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Path Manager<b class="caret"></b></a>
                                  <ul class="dropdown-menu">
-                                    <li><a href="$root/path/createOrUpdate">Create</a></li>
+                                    <li><a href="$root/path/createOrUpdate">CreateOrUpdate</a></li>
                                     <li><a href="$root/path/get">Query</a></li>
                                     <li><a href="$root/path/deleteForm">Delete</a></li>
                                  </ul>

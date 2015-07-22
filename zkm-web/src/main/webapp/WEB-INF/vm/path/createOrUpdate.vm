@@ -32,13 +32,15 @@
         <label for="data" class="col-sm-4 control-label">Data:</label>
 
         <div class="col-sm-8">
-            <textarea name="data" id="data" class="form-control">$!data</textarea>
+            <textarea name="data" id="data" class="form-control" style="height: 350px;">$!data</textarea>
         </div>
     </div>
 
-    <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-8">
-            <button type="submit" class="btn btn-default">Submit</button>
+    #if ($path == "")
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-8">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
         </div>
-    </div>
+    #end
 </form>
