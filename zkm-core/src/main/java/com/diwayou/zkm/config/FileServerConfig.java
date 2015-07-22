@@ -27,9 +27,7 @@ public class FileServerConfig implements ServerConfig {
 
     private Properties properties = new Properties();
 
-    private String filePath;
-
-    private File file;
+    private String fileDir;
 
     private volatile boolean dirty = false;
 
@@ -37,7 +35,8 @@ public class FileServerConfig implements ServerConfig {
 
     @PostConstruct
     public void init() {
-        file = new File(filePath + FILE_NAME);
+        File file = new File(fileDir + FILE_NAME);
+
         try {
             FileUtils.touch(file);
         } catch (IOException e) {
@@ -57,8 +56,19 @@ public class FileServerConfig implements ServerConfig {
             @Override
             public void run() {
                 if (dirty) {
-                    try (Writer writer = new FileWriter(file)) {
-                        properties.store(writer, null);
+                    String filePath = fileDir + FILE_NAME;
+                    File file = new File(filePath);
+                    File bak = new File(filePath + ".bak");
+                    File tmp = new File(filePath + ".tmp");
+                    try (Writer writer = new FileWriter(file);
+                         Writer bakWriter = new FileWriter(bak);
+                         Writer tmpWriter = new FileWriter(tmp)) {
+                        properties.store(bakWriter, null);
+                        properties.store(tmpWriter, null);
+
+                        file.delete();
+
+                        tmp.renameTo(file);
                         logger.info("FileServerConfig saved......");
                     } catch (Exception e) {
                         // ignore
@@ -99,11 +109,11 @@ public class FileServerConfig implements ServerConfig {
         return memoryServerConfig.getConnectString(clusterName);
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getFileDir() {
+        return fileDir;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFileDir(String fileDir) {
+        this.fileDir = fileDir;
     }
 }

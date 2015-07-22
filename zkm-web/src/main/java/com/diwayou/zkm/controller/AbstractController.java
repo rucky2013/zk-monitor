@@ -23,7 +23,7 @@ public abstract class AbstractController {
 
     public static final String TEMPLATE = "template";
 
-    public static final String COMMON_TITLE = "Event Platform Admin";
+    public static final String COMMON_TITLE = "Zookeeper Cluster Monitor";
 
     public static final String SUCCESS = "success";
 

@@ -11,6 +11,6 @@
 
 
     <bean id="fileServerConfig" class="com.diwayou.zkm.config.FileServerConfig">
-           <property name="filePath" value="${config.file.path}"/>
+           <property name="fileDir" value="${config.file.dir}"/>
     </bean>
 </beans>
