@@ -1,6 +1,5 @@
 package com.diwayou.zkm.manager;
 
-import com.diwayou.zkm.config.MemoryServerConfig;
 import com.diwayou.zkm.config.ServerConfig;
 import com.diwayou.zkm.net.NetUtil;
 import com.google.common.collect.Maps;
@@ -25,7 +24,8 @@ public class MonitorManager {
 
     public static final String ZK_NO_RESPONSE = "May Down";
 
-    private ServerConfig serverConfig = new MemoryServerConfig();
+    @Autowired
+    private ServerConfig serverConfig;
 
     public Collection<String> getClusterList() {
         return serverConfig.getClusterNames();
