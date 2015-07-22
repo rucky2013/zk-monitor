@@ -1,3 +1,5 @@
 <pre>
+    $!stat
+    <hr style="height:3px;border:none;border-top:3px solid royalblue;"/>
     $content
 </pre>

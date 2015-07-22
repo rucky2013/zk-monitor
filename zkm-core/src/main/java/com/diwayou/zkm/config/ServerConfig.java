@@ -17,6 +17,8 @@ public interface ServerConfig {
      */
     void addCluster(String clusterName, String connectString);
 
+    void deleteCluster(String clusterName);
+
     Collection<String> getClusterNames();
 
     List<InetSocketAddress> getServerAddresses(String clusterName);

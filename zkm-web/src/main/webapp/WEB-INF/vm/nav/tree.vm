@@ -66,6 +66,8 @@
         $('#tree').treeview('collapseAll', {silent: true});
 
         $('#tree').on('nodeSelected', function (event, node) {
+            if (node.text == "$NO_DATA") return
+
             var path = pathArr.join("/") + "/" + node.text
             $.get("/nav/node?cname=$cname&path=" + path, function (data) {
                 $('#node-content').html(data)

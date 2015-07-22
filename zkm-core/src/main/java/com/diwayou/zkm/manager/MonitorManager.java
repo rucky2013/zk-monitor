@@ -36,6 +36,11 @@ public class MonitorManager {
         zkManager.addCluster(clusterName, connString);
     }
 
+    public void deleteCluster(String clusterName) {
+        serverConfig.deleteCluster(clusterName);
+        zkManager.deleteCluster(clusterName);
+    }
+
     public List<InetSocketAddress> getAddresses(String clusterName) {
         return serverConfig.getServerAddresses(clusterName);
     }

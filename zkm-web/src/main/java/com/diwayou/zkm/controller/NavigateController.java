@@ -1,12 +1,14 @@
 package com.diwayou.zkm.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.diwayou.zkm.controller.handler.BodyRenderHandler;
 import com.diwayou.zkm.manager.ZkManager;
 import com.diwayou.zkm.vm.TreeNode;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.zookeeper.data.Stat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -46,6 +48,7 @@ public class NavigateController extends AbstractController {
 
                 map.put("treeNodes", JSON.toJSONString(treeNodes));
                 map.put("cname", clusterName);
+                map.put("NO_DATA", NO_DATA);
             }
         });
     }
@@ -86,8 +89,14 @@ public class NavigateController extends AbstractController {
                 }
 
                 if (StringUtils.isEmpty(content)) {
-                    content = "No Data";
+                    content = NO_DATA;
+                } else {
+                    Stat stat = zkManager.nodeStat(clusterName, path);
+                    if (stat != null) {
+                        map.put("stat", JSON.toJSONString(stat, SerializerFeature.PrettyFormat));
+                    }
                 }
+
                 map.put("content", content);
             }
         }, HTML);

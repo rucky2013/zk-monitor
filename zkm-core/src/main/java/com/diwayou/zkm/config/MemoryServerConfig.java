@@ -26,6 +26,11 @@ public class MemoryServerConfig implements ServerConfig {
     }
 
     @Override
+    public void deleteCluster(String clusterName) {
+        config.remove(clusterName);
+    }
+
+    @Override
     public Collection<String> getClusterNames() {
         return config.keySet();
     }

@@ -36,6 +36,14 @@ public class ClusterManagerController extends AbstractController {
         return "redirect:/cluster/detail?cname=" + URLEncoder.encode(clusterName, "UTF-8");
     }
 
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String delete(HttpServletRequest request, ModelMap map, @RequestParam("cname") String clusterName) throws UnsupportedEncodingException {
+
+        monitorManager.deleteCluster(clusterName);
+
+        return "redirect:/cluster/list";
+    }
+
     @Override
     protected String getFlag() {
         return "cluster_manager_flag";

@@ -4,7 +4,9 @@
         <th>Cluster Name</th>
         <th>Status</th>
         <th>Navigate</th>
-        <th>Execute Command</th>
+        <th>Command</th>
+        <th>Path</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -14,7 +16,23 @@
             <td><a href="/cluster/detail?cname=$cname">mntr command</a> </td>
             <td><a href="/nav/tree?cname=$cname">Tree View</a> </td>
             <td><a href="/command/exec?cname=$cname">Execute</a> </td>
+            <td><a href="/path/createOrUpdate?cname=$cname">Create</a> </td>
+            <td>
+                <form id="delete-form" action="/cluster/manager/delete" method="post">
+                    <input type="hidden" name="cname" value="$cname">
+                    <input id="submit" type="submit" value="Delete" class="btn btn-group-xs btn-success right" />
+                </form>
+            </td>
         </tr>
     #end
     </tbody>
 </table>
+<script type="text/javascript">
+    $('#submit').click(function (event) {
+
+        var ok = confirm("Delete this cluster?");
+        if (!ok) {
+            event.preventDefault()
+        }
+    })
+</script>

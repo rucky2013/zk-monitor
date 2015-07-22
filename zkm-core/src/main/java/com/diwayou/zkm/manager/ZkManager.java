@@ -6,6 +6,8 @@ import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -25,19 +27,23 @@ public class ZkManager {
     private final ConcurrentMap<String, CuratorFramework> clusterClient = Maps.newConcurrentMap();
 
     public void addCluster(String clusterName, String connString) {
-        CuratorFramework oldClient = clusterClient.get(clusterName);
-        if (oldClient != null) {
-            oldClient.close();
-            clusterClient.remove(clusterName);
-        }
+        deleteCluster(clusterName);
 
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
         CuratorFramework client = CuratorFrameworkFactory.newClient(connString, retryPolicy);
         client.start();
 
-        oldClient = clusterClient.putIfAbsent(clusterName, client);
+        CuratorFramework oldClient = clusterClient.putIfAbsent(clusterName, client);
         if (oldClient != null) {
             client.close();
+        }
+    }
+
+    public void deleteCluster(String clusterName) {
+        CuratorFramework oldClient = clusterClient.get(clusterName);
+        if (oldClient != null) {
+            oldClient.close();
+            clusterClient.remove(clusterName);
         }
     }
 
@@ -70,6 +76,47 @@ public class ZkManager {
         } catch (Exception e) {
             logger.error("nodeValue error: clusterName={}, path={}", clusterName, path, e);
             return null;
+        }
+    }
+
+    public Stat nodeStat(String clusterName, String path) {
+        try {
+            CuratorFramework client = getClient(clusterName);
+            if (client == null) {
+                return null;
+            }
+
+            return client.checkExists().forPath(path);
+        } catch (Exception e) {
+            logger.error("nodeStat error: clusterName={}, path={}", clusterName, path, e);
+            return null;
+        }
+    }
+
+    public void createPath(String clusterName, String path, String data, String createMode) {
+        try {
+            CuratorFramework client = getClient(clusterName);
+            if (client == null) return;
+
+            client.create()
+                    .creatingParentsIfNeeded()
+                    .withMode(CreateMode.valueOf(createMode))
+                    .forPath(path, data.getBytes());
+        } catch (Exception e) {
+            logger.error("createPath error: clusterName={}, path={}, data={}", clusterName, path, data, e);
+        }
+    }
+
+    public void deletePath(String clusterName, String path) {
+        try {
+            CuratorFramework client = getClient(clusterName);
+            if (client == null) return;
+
+            client.delete()
+                    .deletingChildrenIfNeeded()
+                    .forPath(path);
+        } catch (Exception e) {
+            logger.error("deletePath error: clusterName={}, path={}", clusterName, path, e);
         }
     }
 
