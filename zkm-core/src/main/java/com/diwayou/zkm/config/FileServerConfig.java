@@ -56,6 +56,8 @@ public class FileServerConfig implements ServerConfig {
             @Override
             public void run() {
                 if (dirty) {
+                    dirty = false;
+
                     String filePath = fileDir + FILE_NAME;
                     File file = new File(filePath);
                     File bak = new File(filePath + ".bak");
