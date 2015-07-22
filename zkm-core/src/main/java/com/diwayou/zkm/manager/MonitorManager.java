@@ -5,6 +5,8 @@ import com.diwayou.zkm.config.ServerConfig;
 import com.diwayou.zkm.net.NetUtil;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -15,29 +17,34 @@ import java.util.Map;
 /**
  * Created by cn40387 on 15/6/16.
  */
+@Component("monitorManager")
 public class MonitorManager {
+
+    @Autowired
+    private ZkManager zkManager;
 
     public static final String ZK_NO_RESPONSE = "May Down";
 
-    private static ServerConfig serverConfig = new MemoryServerConfig();
+    private ServerConfig serverConfig = new MemoryServerConfig();
 
-    public static Collection<String> getClusterList() {
+    public Collection<String> getClusterList() {
         return serverConfig.getClusterNames();
     }
 
-    public static void addCluster(String clusterName, String connString) {
+    public void addCluster(String clusterName, String connString) {
         serverConfig.addCluster(clusterName, connString);
+        zkManager.addCluster(clusterName, connString);
     }
 
-    public static List<InetSocketAddress> getAddresses(String clusterName) {
+    public List<InetSocketAddress> getAddresses(String clusterName) {
         return serverConfig.getServerAddresses(clusterName);
     }
 
-    public static String sendCommand(String serverIp, int clientPort, String command) throws IOException {
+    public String sendCommand(String serverIp, int clientPort, String command) throws IOException {
         return NetUtil.sendCommand(serverIp, clientPort, command);
     }
 
-    public static Map<String, String> sendCommand(String clusterName, String command) throws IOException {
+    public Map<String, String> sendCommand(String clusterName, String command) throws IOException {
         List<InetSocketAddress> addresses = serverConfig.getServerAddresses(clusterName);
 
         Map<String, String> result = Maps.newHashMapWithExpectedSize(addresses.size());

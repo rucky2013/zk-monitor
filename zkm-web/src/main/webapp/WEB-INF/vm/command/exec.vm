@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-sm-2">
+        <ul class="nav nav-pills nav-stacked">
+            #foreach($comm in $commands)
+            <li role="presentation"><a href="/command/exec?cname=$cname&command=$comm">$comm</a> </li>
+            #end
+        </ul>
+    </div>
+    <div class="col-sm-10">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Ip</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+                #foreach ($status in $statusMap.entrySet())
+                <tr>
+                    <td>$status.getKey()</td>
+                    <td><pre>$status.getValue()</pre></td>
+                </tr>
+                #end
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -3,6 +3,7 @@
   <head>
 	#set($root=$link.getContextPath())
 	#parse("head.vm")
+      #parse("js.vm")
   </head>
   <body role="document">
     #parse("navbar.vm")
@@ -13,6 +14,5 @@
 		<!--changed part end -->
         ##parse("foot.vm")
     </div>
-	#parse("js.vm")
   </body>
 </html>

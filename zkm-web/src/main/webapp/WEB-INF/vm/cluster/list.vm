@@ -2,12 +2,18 @@
     <thead>
     <tr>
         <th>Cluster Name</th>
+        <th>Status</th>
+        <th>Navigate</th>
+        <th>Execute Command</th>
     </tr>
     </thead>
     <tbody>
     #foreach ($cname in $clusterNames)
         <tr>
-            <td><a href="/cluster/manager/detail?cname=$cname">$cname</a></td>
+            <td>$cname</td>
+            <td><a href="/cluster/detail?cname=$cname">mntr command</a> </td>
+            <td><a href="/nav/tree?cname=$cname">Tree View</a> </td>
+            <td><a href="/command/exec?cname=$cname">Execute</a> </td>
         </tr>
     #end
     </tbody>

@@ -11,6 +11,7 @@
     <link href="$root/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
     <link href="$root/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="$root/css/bootstrap-treeview.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="$root/css/theme.css" rel="stylesheet">

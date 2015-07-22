@@ -1,0 +1,96 @@
+<div class="row">
+    <div class="col-sm-4">
+        <ol id="path-nav" class="breadcrumb">
+            <li><a href="#">Root</a></li>
+        </ol>
+        <div id="tree"></div>
+    </div>
+    <div class="col-sm-8">
+        <div id="node-content"></div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function getPath(pathArr) {
+        var path = pathArr.join("/")
+        if (path == "") return "/"
+
+        return path
+    }
+
+    function refreshNav(pathArr) {
+        var pathNav = $('#path-nav')
+        pathNav.html("")
+
+        var last = pathArr[pathArr.length - 1]
+        for (index in pathArr) {
+            path = pathArr[index]
+            if (path == "") {
+                if (index == pathArr.length - 1) {
+                    pathNav.append('<li class="active">Root</li>')
+                } else {
+                    pathNav.append('<li><a href="#">Root</a></li>')
+                }
+            } else {
+                if (index == pathArr.length - 1) {
+                    pathNav.append('<li class="active">' + path + '</li>')
+                } else {
+                    pathNav.append('<li><a href="#">' + path + '</a></li>')
+                }
+            }
+        }
+
+        var children = $('#path-nav li')
+        children = children.slice(0, children.length - 1)
+        children.each(function (index, elem) {
+            $(elem).click(function () {
+                var needRemove = pathArr.length - (index + 1)
+                for (i = 0; i < needRemove; i = i + 1) {
+                    pathArr.pop()
+                }
+
+                var path = getPath(pathArr)
+                $.get("/nav/nodeTree?cname=$cname&path=" + path, function (data) {
+                    if (data != '[]') {
+                        initTree(data, pathArr)
+                        refreshNav(pathArr)
+                    }
+                })
+            })
+        })
+    }
+
+    function initTree(data, pathArr) {
+        $('#tree').treeview({data: data})
+
+        $('#tree').treeview('collapseAll', {silent: true});
+
+        $('#tree').on('nodeSelected', function (event, node) {
+            var path = pathArr.join("/") + "/" + node.text
+            $.get("/nav/node?cname=$cname&path=" + path, function (data) {
+                $('#node-content').html(data)
+            })
+        })
+
+        $('#tree').on('nodeExpanded', function (event, node) {
+            pathArr.push(node.text)
+            var path = getPath(pathArr)
+            $.get("/nav/nodeTree?cname=$cname&path=" + path, function (data) {
+                if (data != '[]') {
+                    initTree(data, pathArr)
+                    refreshNav(pathArr)
+                } else {
+                    pathArr.pop()
+                }
+            })
+        })
+    }
+
+    var data = $treeNodes
+    var pathArr = [""]
+    $(document).ready(function () {
+        initTree(data, pathArr)
+        refreshNav(pathArr)
+    })
+
+</script>

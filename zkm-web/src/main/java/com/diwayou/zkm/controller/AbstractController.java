@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class AbstractController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractController.class);
+    protected final Logger LOG = LoggerFactory.getLogger(getClass());
 
     protected abstract String getFlag();
 
@@ -26,6 +26,8 @@ public abstract class AbstractController {
     public static final String COMMON_TITLE = "Event Platform Admin";
 
     public static final String SUCCESS = "success";
+
+    public static final String HTML = "html_template";
 
     protected String renderBody(ModelMap map, HttpServletRequest request, BodyRenderHandler handler, String template) {
         try {
