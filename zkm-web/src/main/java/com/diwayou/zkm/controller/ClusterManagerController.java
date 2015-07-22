@@ -1,6 +1,6 @@
 package com.diwayou.zkm.controller;
 
-import com.diwayou.zkm.manager.MonitorManager;
+import com.diwayou.zkm.manager.ZkManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,7 +20,7 @@ import java.net.URLEncoder;
 public class ClusterManagerController extends AbstractController {
 
     @Autowired
-    private MonitorManager monitorManager;
+    private ZkManager zkManager;
 
     @RequestMapping(value = "/createForm", method = RequestMethod.GET)
     public String create(HttpServletRequest request, ModelMap map) {
@@ -31,7 +31,7 @@ public class ClusterManagerController extends AbstractController {
     public String create(HttpServletRequest request, ModelMap map, @RequestParam("cname") String clusterName,
                          @RequestParam("connStr") String connString) throws UnsupportedEncodingException {
 
-        monitorManager.addCluster(clusterName, connString);
+        zkManager.addCluster(clusterName, connString);
 
         return "redirect:/cluster/detail?cname=" + URLEncoder.encode(clusterName, "UTF-8");
     }
@@ -39,7 +39,7 @@ public class ClusterManagerController extends AbstractController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String delete(HttpServletRequest request, ModelMap map, @RequestParam("cname") String clusterName) throws UnsupportedEncodingException {
 
-        monitorManager.deleteCluster(clusterName);
+        zkManager.deleteCluster(clusterName);
 
         return "redirect:/cluster/list";
     }

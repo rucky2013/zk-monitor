@@ -1,7 +1,7 @@
 package com.diwayou.zkm.controller;
 
 import com.diwayou.zkm.controller.handler.BodyRenderHandler;
-import com.diwayou.zkm.manager.MonitorManager;
+import com.diwayou.zkm.manager.ZkManager;
 import com.diwayou.zkm.net.COMMAND;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +22,14 @@ import java.util.Map;
 public class ClusterController extends AbstractController {
 
     @Autowired
-    private MonitorManager monitorManager;
+    private ZkManager zkManager;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(HttpServletRequest request, ModelMap map) {
         return renderBody(map, request, new BodyRenderHandler() {
             @Override
             public void handle(ModelMap map) {
-                map.put("clusterNames", monitorManager.getClusterList());
+                map.put("clusterNames", zkManager.getClusterList());
             }
         });
     }
@@ -43,7 +43,7 @@ public class ClusterController extends AbstractController {
 
                 Map<String, String> statusMap = Maps.newHashMap();
                 try {
-                    statusMap = monitorManager.sendCommand(clusterName, command);
+                    statusMap = zkManager.sendCommand(clusterName, command);
 
                 } catch (Exception e) {
                     putAlertMsg(map, e);

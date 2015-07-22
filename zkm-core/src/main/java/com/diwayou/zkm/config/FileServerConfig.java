@@ -1,13 +1,13 @@
 package com.diwayou.zkm.config;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.*;
-import java.net.InetSocketAddress;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executors;
@@ -18,6 +18,8 @@ import java.util.concurrent.TimeUnit;
  * Created by cn40387 on 15/6/16.
  */
 public class FileServerConfig implements ServerConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(FileServerConfig.class);
 
     private static final String FILE_NAME = "/config.properties";
 
@@ -57,6 +59,7 @@ public class FileServerConfig implements ServerConfig {
                 if (dirty) {
                     try (Writer writer = new FileWriter(file)) {
                         properties.store(writer, null);
+                        logger.info("FileServerConfig saved......");
                     } catch (Exception e) {
                         // ignore
                     }
@@ -92,8 +95,8 @@ public class FileServerConfig implements ServerConfig {
     }
 
     @Override
-    public List<InetSocketAddress> getServerAddresses(String clusterName) {
-        return memoryServerConfig.getServerAddresses(clusterName);
+    public String getConnectString(String clusterName) {
+        return memoryServerConfig.getConnectString(clusterName);
     }
 
     public String getFilePath() {

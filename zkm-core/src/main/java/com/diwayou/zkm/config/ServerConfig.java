@@ -1,8 +1,6 @@
 package com.diwayou.zkm.config;
 
-import java.net.InetSocketAddress;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by cn40387 on 15/6/16.
@@ -21,5 +19,5 @@ public interface ServerConfig {
 
     Collection<String> getClusterNames();
 
-    List<InetSocketAddress> getServerAddresses(String clusterName);
+    String getConnectString(String clusterName);
 }

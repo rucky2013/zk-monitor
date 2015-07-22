@@ -14,15 +14,11 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class MemoryServerConfig implements ServerConfig {
 
-    private ConcurrentMap<String/*clusterName*/, List<InetSocketAddress>> config = new ConcurrentHashMap<String, List<InetSocketAddress>>();
+    private ConcurrentMap<String/*clusterName*/, String> config = new ConcurrentHashMap<String, String>();
 
     @Override
     public void addCluster(String clusterName, String connectString) {
-        ConnectStringParser parser = new ConnectStringParser(connectString);
-
-        List<InetSocketAddress> addresses = Lists.newArrayList();
-        addresses.addAll(parser.getServerAddresses());
-        config.put(clusterName, addresses);
+        config.put(clusterName, connectString);
     }
 
     @Override
@@ -36,7 +32,7 @@ public class MemoryServerConfig implements ServerConfig {
     }
 
     @Override
-    public List<InetSocketAddress> getServerAddresses(String clusterName) {
+    public String getConnectString(String clusterName) {
         return config.get(clusterName);
     }
 }

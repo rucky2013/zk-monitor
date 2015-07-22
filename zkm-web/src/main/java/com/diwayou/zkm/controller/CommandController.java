@@ -1,7 +1,7 @@
 package com.diwayou.zkm.controller;
 
 import com.diwayou.zkm.controller.handler.BodyRenderHandler;
-import com.diwayou.zkm.manager.MonitorManager;
+import com.diwayou.zkm.manager.ZkManager;
 import com.diwayou.zkm.net.COMMAND;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class CommandController extends AbstractController {
 
     @Autowired
-    private MonitorManager monitorManager;
+    private ZkManager zkManager;
 
     @RequestMapping(value = "/exec", method = RequestMethod.GET)
     public String exec(HttpServletRequest request, ModelMap map,
@@ -37,7 +37,7 @@ public class CommandController extends AbstractController {
                 Map<String, String> statusMap = Maps.newHashMap();
                 try {
                     if (!StringUtils.isEmpty(command)) {
-                        statusMap = monitorManager.sendCommand(clusterName, command);
+                        statusMap = zkManager.sendCommand(clusterName, command);
                     }
 
                 } catch (Exception e) {
