@@ -191,6 +191,44 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>local</env>
+                <deploy.phase>local</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>alpha</id>
+            <properties>
+                <env>alpha</env>
+                <deploy.phase>alpha</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>beta</id>
+            <properties>
+                <env>beta</env>
+                <deploy.phase>beta</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+        <profile>
+            <id>release</id>
+            <properties>
+                <env>release</env>
+                <deploy.phase>release</deploy.phase>
+                <deploy.dir>${basedir}/../deploy</deploy.dir>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -207,6 +245,53 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <outputDirectory>target/classes</outputDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <testOutputDirectory>target/test-classess</testOutputDirectory>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.json</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+            <testResource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>data.properties</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>src/main/filters</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java_source_version}</source>
+                    <target>${java_target_version}</target>
+                    <testSource>${java_source_version}</testSource>
+                    <testTarget>${java_target_version}</testTarget>
+                </configuration>
+                <version>${maven-compiler-plugin.version}</version>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

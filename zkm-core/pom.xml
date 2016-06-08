@@ -89,44 +89,6 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>local</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <env>local</env>
-                <deploy.phase>local</deploy.phase>
-                <deploy.dir>${basedir}/../deploy</deploy.dir>
-            </properties>
-        </profile>
-        <profile>
-            <id>alpha</id>
-            <properties>
-                <env>alpha</env>
-                <deploy.phase>alpha</deploy.phase>
-                <deploy.dir>${basedir}/../deploy</deploy.dir>
-            </properties>
-        </profile>
-        <profile>
-            <id>beta</id>
-            <properties>
-                <env>beta</env>
-                <deploy.phase>beta</deploy.phase>
-                <deploy.dir>${basedir}/../deploy</deploy.dir>
-            </properties>
-        </profile>
-        <profile>
-            <id>release</id>
-            <properties>
-                <env>release</env>
-                <deploy.phase>release</deploy.phase>
-                <deploy.dir>${basedir}/../deploy</deploy.dir>
-            </properties>
-        </profile>
-    </profiles>
-
     <build>
         <filters>
             <filter>${basedir}/src/main/filters/${env}.properties</filter>
