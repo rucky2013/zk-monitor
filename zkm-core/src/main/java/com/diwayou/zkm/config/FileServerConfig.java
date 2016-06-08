@@ -62,19 +62,21 @@ public class FileServerConfig implements ServerConfig {
                     File file = new File(filePath);
                     File bak = new File(filePath + ".bak");
                     File tmp = new File(filePath + ".tmp");
-                    try (Writer writer = new FileWriter(file);
-                         Writer bakWriter = new FileWriter(bak);
-                         Writer tmpWriter = new FileWriter(tmp)) {
-                        properties.store(bakWriter, null);
+                    try (Writer tmpWriter = new FileWriter(tmp)) {
                         properties.store(tmpWriter, null);
-
-                        file.delete();
-
-                        tmp.renameTo(file);
-                        logger.info("FileServerConfig saved......");
                     } catch (Exception e) {
                         // ignore
                     }
+                    try {
+                        FileUtils.copyFile(file, bak);
+                    } catch (IOException e) {
+                        // ignore
+                    }
+
+                    file.delete();
+
+                    tmp.renameTo(file);
+                    logger.info("FileServerConfig saved to {}......", file.getAbsoluteFile());
                 }
             }
         }, 1, 1, TimeUnit.MINUTES);

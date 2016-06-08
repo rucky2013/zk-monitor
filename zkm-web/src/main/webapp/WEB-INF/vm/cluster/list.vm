@@ -20,7 +20,7 @@
             <td>
                 <form id="delete-form" action="/cluster/manager/delete" method="post">
                     <input type="hidden" name="cname" value="$cname">
-                    <input id="submit" type="submit" value="Delete" class="btn btn-group-xs btn-success right" />
+                    <input id="submit" class="del_evt" type="submit" value="Delete" class="btn btn-group-xs btn-success right" />
                 </form>
             </td>
         </tr>
@@ -28,7 +28,7 @@
     </tbody>
 </table>
 <script type="text/javascript">
-    $('#submit').click(function (event) {
+    $('.del_evt').click(function (event) {
 
         var ok = confirm("Delete this cluster?");
         if (!ok) {
